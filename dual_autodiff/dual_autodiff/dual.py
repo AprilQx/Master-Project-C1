@@ -10,6 +10,10 @@ class Dual:
         self.real = float(real)
         self.dual = float(dual)
 
+    def zero():
+        """Create a zero dual number"""
+        return Dual(0.0, 0.0)
+    
     def __add__(self, other):
         """
         The sum of two dual numbers is calculated using the formula:"""
@@ -78,9 +82,4 @@ class Dual:
         the dual part of the tan is calculated using the formula:"""
         return Dual(math.tan(self.real), self.dual / (math.cos(self.real) ** 2))
     
-    def atan(self):
-        """
-        arctan(x) = tan^(-1)(x)
-        the dual part of the atan is calculated using the formula:"
-        """
-        return Dual(math.atan(self.real), self.dual / (1 + self.real ** 2))
+   

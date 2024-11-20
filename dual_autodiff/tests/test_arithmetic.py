@@ -15,7 +15,7 @@ def test_addition(sample_duals):
     for x, y in sample_duals:
         result = x + y
         assert result.real == x.real + y.real
-        assert z.dual == x.dual + y.dual
+        assert result.dual == x.dual + y.dual
 
 def test_addition_with_scalar(sample_duals):
     """Test addition of dual numbers with scalar"""
@@ -61,7 +61,7 @@ def test_division(sample_duals):
         if y.real != 0:
             result = x / y
             assert result.real == x.real / y.real
-            assert result.dual == (x.dual * y.real - x.real * y.dual) / (y.real ** 2)
+            assert pytest.approx(result.dual) == (x.dual * y.real - x.real * y.dual) / (y.real ** 2)
 
 def test_division_by_zero():
     """Test division by zero handling"""
