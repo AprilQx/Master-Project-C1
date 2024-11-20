@@ -1,0 +1,52 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dual_autodiff"
+version = "0.1.0"
+description = "Automatic differentiation using dual numbers"
+authors = [{name = "Xueqing Xu"}]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.20.0",
+    "typing-extensions>=4.0.0"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0"
+]
+docs = [
+    "sphinx>=4.0.0",
+    "sphinx-rtd-theme>=1.0.0",
+]
+dev = [
+    "black",
+    "pylint",
+    "pytest-cov",
+    "mypy>=1.0.0",  # For type checking
+]
+
+[
+tool.pytest.ini_options
+]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "--cov=dual_autodiff"
+
+[
+tool.mypy
+]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[
+tool.black
+]
+line-length = 88
+target-version = ['py310']
