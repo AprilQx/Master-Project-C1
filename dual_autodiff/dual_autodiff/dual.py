@@ -6,11 +6,28 @@ class Dual:
     """
     A class to represent a dual number.
     """
-    def __init__(self, real: Union[int, float], dual: Union[int, float]):
+    def __init__(self, real: Union[int, float], dual: Union[int, float]=0.0):
+        """
+        Initialize a dual number with validation for special values
+
+        Args:
+            real (Union[int, float]): The real part of the dual number
+            dual (Union[int, float], optional): The dual part of the dual number. Defaults to 0.0.
+        
+        Raises:
+            ValueError: Infinity is not allowed in dual numbers
+            ValueError: NaN is not allowed in dual numbers
+        """
+        if math.isinf(real) or math.isinf(dual):
+            raise ValueError("Infinity is not allowed in dual numbers")
+        if math.isnan(real) or math.isnan(dual):
+            raise ValueError("NaN is not allowed in dual numbers")
         self.real = float(real)
         self.dual = float(dual)
 
+    @staticmethod
     def zero():
+        #no access to instance variables
         """Create a zero dual number"""
         return Dual(0.0, 0.0)
     

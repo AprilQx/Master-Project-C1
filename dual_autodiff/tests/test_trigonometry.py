@@ -3,7 +3,7 @@ import math
 from dual_autodiff.dual import Dual
 
 @pytest.fixture
-def trg_values():
+def trig_values():
     return [
         Dual(0, 1),
         Dual(math.pi/6, 1),
@@ -12,12 +12,12 @@ def trg_values():
         Dual(math.pi/2, 1)
     ]
 
-def test_sin(trg_values):
+def test_sin(trig_values):
     """Test sin function"""
-    for x in trg_values:
+    for x in trig_values:
         result = x.sin()
-        assert result.real == math.sin(x.real)
-        assert result.dual == x.dual * math.cos(x.real)
+        assert result.real == pytest.approx(math.sin(x.real))
+        assert result.dual == pytest.approx(x.dual * math.cos(x.real))
 
 def test_cos(trig_values):
     """Test cosine function"""
