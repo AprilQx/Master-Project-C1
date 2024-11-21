@@ -21,7 +21,11 @@ dev = [
     "black",
     "pylint",
     "pytest-cov",
-    "mypy>=1.0.0"  # For type checking
+    "mypy>=1.0.0"  
+    "sphinx-rtd-theme",
+    "nbsphinx",
+    "ipython",
+    "jupyter"
 ]
 
 [tool.pytest.ini_options]

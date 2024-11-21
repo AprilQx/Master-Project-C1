@@ -29,7 +29,7 @@ def test_multiplication(sample_duals):
     """Test multiplication of dual numbers"""
     for x, y in sample_duals:
         result = x * y
-        assert result.real == pytest.apprx(x.real * y.real)
+        assert result.real == pytest.approx(x.real * y.real)
         assert result.dual == pytest.approx(x.real * y.dual + x.dual * y.real)
 
 def test_multiplication_with_scalar(sample_duals):
