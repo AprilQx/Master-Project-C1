@@ -38,6 +38,14 @@ class Dual:
             return Dual(self.real + other, self.dual) #Handle regular numbers
         return Dual(self.real + other.real, self.dual + other.dual) #Handle dual numbers
     
+    def __radd__(self, other):
+        """
+        Right addition with scalar: scalar + dual
+        """
+        if isinstance(other, (int, float)):
+            return Dual(other + self.real, self.dual)
+        raise TypeError(f"unsupported operand type for +: '{type(other)}' and 'Dual'")
+
     def __mul__(self, other):
             """
             The product of two dual numbers is calculated using the formula:"""
@@ -45,12 +53,37 @@ class Dual:
                 return Dual(self.real * other, self.dual * other) #Handle regular numbers
             return Dual(self.real * other.real, self.real * other.dual + self.dual * other.real)#Handle dual numbers
     
+    def __rmul__(self, other):
+        """
+        Right multiplication with scalar: scalar * dual
+        """
+        if isinstance(other, (int, float)):
+            return Dual(other * self.real, other * self.dual)
+        raise TypeError(f"unsupported operand type for *: '{type(other)}' and 'Dual'")
+   
     def __sub__(self, other):
         """
         The difference of two dual numbers is calculated using the formula:"""
         if isinstance(other, (int, float)):
             return Dual(self.real - other, self.dual)
         return Dual(self.real - other.real, self.dual - other.dual)
+    def __rsub__(self, other):
+        """
+        Right subtraction with scalar: scalar - dual
+        """
+        if isinstance(other, (int, float)):
+            return Dual(other - self.real, -self.dual)
+        raise TypeError(f"unsupported operand type for -: '{type(other)}' and 'Dual'")
+        
+    def __rtruediv__(self, other):
+        """
+        Right division with scalar: scalar / dual
+        Calculated as: a/(b + cε) = (a/b) + (-ac/b^2)ε
+        """
+        if isinstance(other, (int, float)):
+            return Dual(other / self.real, -other * self.dual / (self.real ** 2))
+        raise TypeError(f"unsupported operand type for /: '{type(other)}' and 'Dual'")
+       
     
     def __truediv__(self, other):
         """
