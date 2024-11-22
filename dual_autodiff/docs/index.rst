@@ -29,12 +29,6 @@ print(y.dual)  # prints 4.0 (derivative of x^2 is 2x)
 ## Contents
 
 ```{toctree}
-:maxdepth: 2
-:caption: Contents:
-
-api
-tutorial
-```
 
 ## Indices and tables
 
