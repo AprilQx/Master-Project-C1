@@ -1,37 +1,34 @@
-# Dual Number Automatic Differentiation
+Dual Number Automatic Differentiation
+==================================
 
-Welcome to the documentation for `dual_autodiff`, a Python package for automatic differentiation using dual numbers.
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
 
-## Overview
+   theory
+   tutorial
 
-This package implements forward-mode automatic differentiation using dual numbers. It provides a simple and efficient way to compute derivatives of mathematical functions.
+Quick Example
+------------
 
-## Installation
+.. code-block:: python
 
-```bash
-pip install -e .
-```
+   from dual_autodiff import Dual
+   x = Dual(2.0, 1.0)
+   y = x * x 
+   print(f"Value: {y.real}")     # 4.0
+   print(f"Derivative: {y.dual}") # 4.0
 
-## Quick Start
+Installation
+------------
 
-```python
-from dual_autodiff import Dual
+.. code-block:: bash
 
-# Create a dual number
-x = Dual(2.0, 1.0)  # real part = 2.0, dual part = 1.0
+   pip install -e .
 
-# Basic operations
-y = x * x  # Square the number
-print(y.real)  # prints 4.0
-print(y.dual)  # prints 4.0 (derivative of x^2 is 2x)
-```
+Indices and tables
+=================
 
-## Contents
-
-```{toctree}
-
-## Indices and tables
-
-* {ref}`genindex`
-* {ref}`modindex`
-* {ref}`search`
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
