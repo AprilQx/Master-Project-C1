@@ -52,6 +52,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#structure">Structure</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#why-dual-numbers">Why Dual Numbers?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#applications-of-dual-numbers">Applications of Dual Numbers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#basic-operations">Basic Operations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#addition">Addition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#multiplication">Multiplication</a></li>
@@ -112,6 +114,47 @@
 * <span class="math notranslate nohighlight">\(b\)</span> is the dual part
 * <span class="math notranslate nohighlight">\(\epsilon\)</span> is the dual unit with <span class="math notranslate nohighlight">\(\epsilon^2 = 0\)</span></p>
 </section>
+</section>
+<section id="why-dual-numbers">
+<h2>Why Dual Numbers?<a class="headerlink" href="#why-dual-numbers" title="Permalink to this heading"></a></h2>
+<p>The primary benefit of using dual numbers is that they allow for <strong>forward-mode automatic differentiation</strong>. Here’s how it works:</p>
+<ol class="arabic simple">
+<li><p><strong>Initialisation</strong>:
+Start with a dual number where the real part represents the function’s input value, and the
+dual part represents the derivative (typically, we initialise the dual part to 1 for differentiation).</p></li>
+<li><p><strong>Operations</strong>:
+Apply standard mathematical operations (addition, multiplication, etc.) to the dual number.
+The real part will give you the function value, while the dual part will carry the derivative
+information. Operations are automatically propagated through the function.</p></li>
+<li><p><strong>Elementary Functions</strong>:
+Functions like <code class="docutils literal notranslate"><span class="pre">sin(x)</span></code>, <code class="docutils literal notranslate"><span class="pre">cos(x)</span></code>, <code class="docutils literal notranslate"><span class="pre">exp(x)</span></code>, and <code class="docutils literal notranslate"><span class="pre">log(x)</span></code> are implemented for
+dual numbers in a way that the derivative is computed during the function evaluation.</p></li>
+</ol>
+<p>For example, consider differentiating the function <span class="math notranslate nohighlight">\(f(x) = \sin(x)\)</span> at a point:</p>
+<ul class="simple">
+<li><p>When we apply the sine function to a dual number, the real part becomes <span class="math notranslate nohighlight">\(\sin(a)\)</span>,
+and the dual part becomes <span class="math notranslate nohighlight">\(\cos(a) \times b\)</span>, where <span class="math notranslate nohighlight">\(b\)</span> is the derivative
+(dual part) of the input.</p></li>
+</ul>
+<p>This allows us to compute the function’s value and its derivative simultaneously, with minimal
+overhead and high accuracy.</p>
+</section>
+<section id="applications-of-dual-numbers">
+<h2>Applications of Dual Numbers<a class="headerlink" href="#applications-of-dual-numbers" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Optimisation</strong>:
+Dual numbers are often used in optimisation algorithms, where derivatives are needed to
+compute gradients and optimise functions.</p></li>
+<li><p><strong>Machine Learning</strong>:
+In neural networks, where backpropagation relies on calculating gradients, dual numbers
+can efficiently compute the required derivatives.</p></li>
+<li><p><strong>Scientific Computing</strong>:
+Any field that requires solving systems of equations or finding rates of change can
+benefit from the use of dual numbers for automatic differentiation.</p></li>
+</ul>
+<p>In summary, dual numbers offer a compact and efficient way to compute both function values
+and their derivatives, making them an invaluable tool in various domains, from optimisation
+to machine learning.</p>
 </section>
 <section id="basic-operations">
 <h2>Basic Operations<a class="headerlink" href="#basic-operations" title="Permalink to this heading"></a></h2>

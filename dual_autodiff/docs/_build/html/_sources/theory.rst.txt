@@ -19,6 +19,53 @@ where:
 * :math:`b` is the dual part
 * :math:`\epsilon` is the dual unit with :math:`\epsilon^2 = 0`
 
+
+Why Dual Numbers?
+----------------
+
+The primary benefit of using dual numbers is that they allow for **forward-mode automatic differentiation**. Here's how it works:
+
+1. **Initialisation**:
+   Start with a dual number where the real part represents the function's input value, and the 
+   dual part represents the derivative (typically, we initialise the dual part to 1 for differentiation).
+
+2. **Operations**:
+   Apply standard mathematical operations (addition, multiplication, etc.) to the dual number.
+   The real part will give you the function value, while the dual part will carry the derivative 
+   information. Operations are automatically propagated through the function.
+
+3. **Elementary Functions**:
+   Functions like ``sin(x)``, ``cos(x)``, ``exp(x)``, and ``log(x)`` are implemented for
+   dual numbers in a way that the derivative is computed during the function evaluation.
+
+For example, consider differentiating the function :math:`f(x) = \sin(x)` at a point:
+
+* When we apply the sine function to a dual number, the real part becomes :math:`\sin(a)`, 
+  and the dual part becomes :math:`\cos(a) \times b`, where :math:`b` is the derivative 
+  (dual part) of the input.
+
+This allows us to compute the function's value and its derivative simultaneously, with minimal 
+overhead and high accuracy.
+
+Applications of Dual Numbers
+-------------------------
+
+* **Optimisation**:
+  Dual numbers are often used in optimisation algorithms, where derivatives are needed to 
+  compute gradients and optimise functions.
+
+* **Machine Learning**:
+  In neural networks, where backpropagation relies on calculating gradients, dual numbers 
+  can efficiently compute the required derivatives.
+
+* **Scientific Computing**:
+  Any field that requires solving systems of equations or finding rates of change can 
+  benefit from the use of dual numbers for automatic differentiation.
+
+In summary, dual numbers offer a compact and efficient way to compute both function values 
+and their derivatives, making them an invaluable tool in various domains, from optimisation 
+to machine learning.
+
 Basic Operations
 --------------
 
