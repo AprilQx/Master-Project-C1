@@ -1,6 +1,5 @@
 # dual_autodiff
 
-[![Documentation Status](https://readthedocs.org/projects/dual-autodiff/badge/?version=latest)](https://dual-autodiff.readthedocs.io/en/latest/?badge=latest)
 
 Dual number automatic differentiation package for Python.
 
