@@ -26,9 +26,3 @@ Installation
 
    pip install -e .
 
-Indices and tables
-=================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
