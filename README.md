@@ -5,7 +5,7 @@ Dual number automatic differentiation package for Python.
 
 ## Documentation
 
-Full documentation is available at: https://dual-autodiff.readthedocs.io/
+Full documentation is available at: 
 
 ## Quick Start
 ```python

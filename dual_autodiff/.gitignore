@@ -46,8 +46,7 @@ coverage.xml
 .hypothesis/
 
 # Documentation
-docs/_build/
-docs/generated/
+
 
 # MacOS
 .DS_Store

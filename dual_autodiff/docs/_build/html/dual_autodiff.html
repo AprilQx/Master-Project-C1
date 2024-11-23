@@ -1,0 +1,527 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dual Number Automatic Differentiation - A Gentle Introduction &mdash; dual_autodiff  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Theory" href="theory.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            dual_autodiff
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Dual Number Automatic Differentiation - A Gentle Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Table-of-Contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Understanding-Dual-Numbers">Understanding Dual Numbers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Getting-Started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Basic-Operations">Basic Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Computing-Derivatives">Computing Derivatives</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Sine-Function">Sine Function</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Real-World-Application:-Portfolio-Optimization">Real-World Application: Portfolio Optimization</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dual_autodiff</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Dual Number Automatic Differentiation - A Gentle Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/dual_autodiff.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Dual-Number-Automatic-Differentiation---A-Gentle-Introduction">
+<h1>Dual Number Automatic Differentiation - A Gentle Introduction<a class="headerlink" href="#Dual-Number-Automatic-Differentiation---A-Gentle-Introduction" title="Permalink to this heading"></a></h1>
+<p>This tutorial demonstrates how to use the <code class="docutils literal notranslate"><span class="pre">dual_autodiff</span></code> package for automatic differentiation using dual numbers.</p>
+<section id="Table-of-Contents">
+<h2>Table of Contents<a class="headerlink" href="#Table-of-Contents" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Understanding Dual Numbers</p></li>
+<li><p>Getting Started</p></li>
+<li><p>Basic Operations</p></li>
+<li><p>Computing Derivatives</p></li>
+<li><p>Real-World Application</p></li>
+</ol>
+</section>
+<section id="Understanding-Dual-Numbers">
+<h2>Understanding Dual Numbers<a class="headerlink" href="#Understanding-Dual-Numbers" title="Permalink to this heading"></a></h2>
+<p>Think of dual numbers as an extension of real numbers, similar to how complex numbers work. While complex numbers have a real part and an imaginary part with i² = -1, dual numbers have:</p>
+<p>A real part (a), A dual part (b), A dual unit (ε) where ε² = 0</p>
+<p>For example: 2 + 3ε is a dual number where: 2 is the real part, 3 is the dual part, ε is the dual unit</p>
+<p>The magic happens when we use these numbers for differentiation - the dual part automatically gives us the derivative!</p>
+</section>
+<section id="Getting-Started">
+<h2>Getting Started<a class="headerlink" href="#Getting-Started" title="Permalink to this heading"></a></h2>
+<p>First, let’s import some useful notebooks.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">dual_autodiff</span> <span class="kn">import</span> <span class="n">Dual</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Intel MKL WARNING: Support of Intel(R) Streaming SIMD Extensions 4.2 (Intel(R) SSE4.2) enabled only processors has been deprecated. Intel oneAPI Math Kernel Library 2025.0 will require Intel(R) Advanced Vector Extensions (Intel(R) AVX) instructions.
+Intel MKL WARNING: Support of Intel(R) Streaming SIMD Extensions 4.2 (Intel(R) SSE4.2) enabled only processors has been deprecated. Intel oneAPI Math Kernel Library 2025.0 will require Intel(R) Advanced Vector Extensions (Intel(R) AVX) instructions.
+</pre></div></div>
+</div>
+</section>
+<section id="Basic-Operations">
+<h2>Basic Operations<a class="headerlink" href="#Basic-Operations" title="Permalink to this heading"></a></h2>
+<p>Let’s explore how dual numbers work with basic arithmetic. Think of these operations as building blocks for more complex calculations.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span><span class="o">=</span><span class="n">Dual</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c1">#1+2ε</span>
+<span class="n">y</span><span class="o">=</span><span class="n">Dual</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="c1">#3+4ε</span>
+
+<span class="c1">#Let&#39;s see what happens when we perform basic operations</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting Values:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;x=</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">real</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">dual</span><span class="si">}</span><span class="s2">ε&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;y=</span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">real</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">dual</span><span class="si">}</span><span class="s2">ε&quot;</span><span class="p">)</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Addition: x+y=</span><span class="si">{</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">dual</span><span class="si">}</span><span class="s2">ε&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Subtraction: x-y=</span><span class="si">{</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">dual</span><span class="si">}</span><span class="s2">ε&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Multiplication: x*y=</span><span class="si">{</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">dual</span><span class="si">}</span><span class="s2">ε&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Division: x/y=</span><span class="si">{</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="p">(</span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">dual</span><span class="si">:</span><span class="s2">.2g</span><span class="si">}</span><span class="s2">ε&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Starting Values:
+x=1.0+2.0ε
+y=3.0+4.0ε
+Addition: x+y=4.0+6.0ε
+Subtraction: x-y=2.0+2.0ε
+Multiplication: x*y=3.0+10.0ε
+Division: x/y=0.33+0.22ε
+</pre></div></div>
+</div>
+</section>
+<section id="Computing-Derivatives">
+<h2>Computing Derivatives<a class="headerlink" href="#Computing-Derivatives" title="Permalink to this heading"></a></h2>
+<p>Now for the exciting part - computing derivatives! We’ll look at some common functions and compare our results with known analytical solutions.</p>
+<p>You can use dual number operations on numbers to calculate the value of f(x) while also calculating f’(x) at the same time.</p>
+<p>We will start with the function</p>
+<div class="math notranslate nohighlight">
+\[f(x)=3x+2\]</div>
+<p>and we will calculate f(4) and f’(4).</p>
+<p>The first thing we do is convert our 4 into a dual number, using 1 for the dual component, since we are plugging it in for the value of x, which has a derivative of 1.</p>
+<div class="math notranslate nohighlight">
+\[4+1\epsilon\]</div>
+<p>Next, we want to multiply that by the constant 3, using 0 for the dual component since it is just a constant (and the derivative of a constant is 0)</p>
+<div class="math notranslate nohighlight">
+\[(4+1\epsilon) * (3 + 0\epsilon) =
+12 + 0\epsilon + 3\epsilon + 0\epsilon^2 =
+12 + 3\epsilon\]</div>
+<p>Lastly, we need to add the constant 2, using 0 again for the dual component since it’s just a constant.</p>
+<div class="math notranslate nohighlight">
+\[(12 + 3\epsilon) + (2 + 0\epsilon) =
+14 + 3\epsilon\]</div>
+<p>In our result, the real number component (14) is the value of f(4) and the dual component (3) is the derivative f’(4), which is correct if you work it out!</p>
+<p>We’ve created a helper function that shows both the original function and its derivative:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_function_and_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">f_prime</span><span class="p">,</span> <span class="n">x_range</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots a function and its derivative using both dual numbers and analytical methods.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        f: The function to differentiate (should handle both Dual and float inputs)</span>
+<span class="sd">        f_prime: The known analytical derivative (takes float input)</span>
+<span class="sd">        x_range: Tuple of (min_x, max_x) for plotting range</span>
+<span class="sd">        title: Title for the plot</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; # Plot sin(x) and its derivative</span>
+<span class="sd">        &gt;&gt;&gt; plot_function_and_derivative(</span>
+<span class="sd">        ...     lambda x: x.sin() if isinstance(x, Dual) else np.sin(x),</span>
+<span class="sd">        ...     lambda x: np.cos(x),</span>
+<span class="sd">        ...     [-2*np.pi, 2*np.pi],</span>
+<span class="sd">        ...     &#39;sin(x)&#39;</span>
+<span class="sd">        ... )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Create array of x values for plotting</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="c1"># Calculate function values</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+
+    <span class="c1"># Compute derivatives using both methods</span>
+    <span class="n">derivatives_dual</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">Dual</span><span class="p">(</span><span class="n">xi</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span><span class="o">.</span><span class="n">dual</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>  <span class="c1"># Dual number method</span>
+    <span class="n">derivatives_analytical</span> <span class="o">=</span> <span class="p">[</span><span class="n">f_prime</span><span class="p">(</span><span class="n">xi</span><span class="p">)</span> <span class="k">for</span> <span class="n">xi</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>       <span class="c1"># Analytical method</span>
+
+    <span class="c1"># Create subplot figure</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+    <span class="c1"># Left subplot: Original function</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;f(x)&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1"> - Function&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;f(x)&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="c1"># Right subplot: Derivatives</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">derivatives_dual</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Dual Number&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">derivatives_analytical</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Analytical&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s1"> - Derivative&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;f&#39;(x)&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+    <span class="c1"># Adjust layout and display</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<br/></pre></div>
+</div>
+</div>
+<section id="Sine-Function">
+<h3>Sine Function<a class="headerlink" href="#Sine-Function" title="Permalink to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function_and_derivative</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Dual</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">],</span>
+    <span class="s1">&#39;sin(x)&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/dual_autodiff_22_0.png" src="_images/dual_autodiff_22_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example 2: Plotting x²</span>
+<span class="n">plot_function_and_derivative</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">,</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;x²&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/dual_autodiff_23_0.png" src="_images/dual_autodiff_23_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example 3: Plotting exp(x)</span>
+<span class="n">plot_function_and_derivative</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Dual</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;exp(x)&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/dual_autodiff_24_0.png" src="_images/dual_autodiff_24_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example 4: More complex function: x²sin(x)</span>
+<span class="k">def</span> <span class="nf">complex_function</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Dual</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">complex_derivative</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_function_and_derivative</span><span class="p">(</span>
+    <span class="n">complex_function</span><span class="p">,</span>
+    <span class="n">complex_derivative</span><span class="p">,</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;x²sin(x)&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/dual_autodiff_26_0.png" src="_images/dual_autodiff_26_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Real-World-Application:-Portfolio-Optimization">
+<h2>Real-World Application: Portfolio Optimization<a class="headerlink" href="#Real-World-Application:-Portfolio-Optimization" title="Permalink to this heading"></a></h2>
+<p>Problem Description</p>
+<p>When managing an investment portfolio with two assets, investors need to find the optimal balance between them to minimize risk. Let’s demonstrate how dual numbers can help us find this optimal allocation.</p>
+<p>The Mathematical Model:</p>
+<p>The portfolio risk formula is given by:</p>
+<p>risk = √(w²σ₁² + (1-w)²σ₂² + 2w(1-w)σ₁σ₂ρ)</p>
+<p>where: - w is the weight of the first asset (0 to 1) - σ₁ is the volatility of asset 1 - σ₂ is the volatility of asset 2 - ρ is the correlation between assets</p>
+<p>Let’s implement this with real numbers:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">portfolio_risk</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">volatility1</span><span class="p">,</span><span class="n">volatility2</span><span class="p">,</span><span class="n">correlation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the risk of a portfolio with two assets.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        w: Array of weights for each asset</span>
+<span class="sd">        volatility1: Volatility of asset 1</span>
+<span class="sd">        volatility2: Volatility of asset 2</span>
+<span class="sd">        correlation: Correlation between assets</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The portfolio risk</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate the portfolio volatility</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">Dual</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">w</span> <span class="o">*</span> <span class="n">volatility1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">volatility2</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                <span class="mi">2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">volatility1</span> <span class="o">*</span> <span class="n">volatility2</span> <span class="o">*</span> <span class="n">correlation</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="c1"># Handle regular number inputs</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">w</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">volatility1</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                  <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">volatility2</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span>
+                  <span class="mi">2</span> <span class="o">*</span> <span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="n">volatility1</span> <span class="o">*</span> <span class="n">volatility2</span> <span class="o">*</span> <span class="n">correlation</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example portfolio parameters</span>
+<span class="n">vol1</span> <span class="o">=</span> <span class="mf">0.20</span>
+<span class="n">vol2</span> <span class="o">=</span> <span class="mf">0.30</span>
+<span class="n">corr</span> <span class="o">=</span> <span class="mf">0.50</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># 100 points from 0% to 100%</span>
+<span class="n">risks</span> <span class="o">=</span> <span class="p">[</span><span class="n">portfolio_risk</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">vol1</span><span class="p">,</span> <span class="n">vol2</span><span class="p">,</span> <span class="n">corr</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">risk_derivatives</span> <span class="o">=</span> <span class="p">[</span><span class="n">portfolio_risk</span><span class="p">(</span><span class="n">Dual</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="n">vol1</span><span class="p">,</span> <span class="n">vol2</span><span class="p">,</span> <span class="n">corr</span><span class="p">)</span><span class="o">.</span><span class="n">dual</span>
+                   <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>Understand the result:</p>
+<ol class="arabic">
+<li><p>When weight = 0:</p>
+<p>Portfolio consists entirely of Asset 2 Risk = 30% (volatility of Asset 2)</p>
+</li>
+<li><p>When weight=1:</p>
+<p>Portfolio consists entirely of Asset 1 Risk = 20% (volatility of Asset 1)</p>
+</li>
+</ol>
+<p>Optimal weight (where derivative = 0):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimal_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">risk_derivatives</span><span class="p">))</span>
+<span class="n">optimal_weight</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">optimal_idx</span><span class="p">]</span>
+<span class="n">minimum_risk</span> <span class="o">=</span> <span class="n">risks</span><span class="p">[</span><span class="n">optimal_idx</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal weight for Asset 1: </span><span class="si">{</span><span class="n">optimal_weight</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum portfolio risk: </span><span class="si">{</span><span class="n">minimum_risk</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Optimal weight for Asset 1: 0.86
+Minimum portfolio risk: 0.1964
+</pre></div></div>
+</div>
+<p>Visualization:</p>
+<p>We will create two plots side by side:</p>
+<p>Risk Plot:</p>
+<p>X-axis: Weight of Asset 1 (0 to 1)</p>
+<p>Y-axis: Portfolio Risk</p>
+<p>Shows how risk changes with different allocations The minimum point indicates optimal allocation</p>
+<p>Derivative Plot:</p>
+<p>X-axis: Weight of Asset 1 (0 to 1)</p>
+<p>Y-axis: Derivative of Risk Where line crosses zero = optimal allocation</p>
+<p>Negative slope means risk decreasing</p>
+<p>Positive slope means risk increasing</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="c1"># Risk plot</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">risks</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Portfolio Risk vs Weight&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Weight of Asset 1&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Portfolio Risk&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Derivative plot</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">risk_derivatives</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Derivative of Risk vs Weight&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Weight of Asset 1&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Risk Derivative&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/dual_autodiff_38_0.png" src="_images/dual_autodiff_38_0.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="theory.html" class="btn btn-neutral float-left" title="Theory" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Xueqing Xu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

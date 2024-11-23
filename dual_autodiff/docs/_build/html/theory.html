@@ -1,0 +1,216 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theory &mdash; dual_autodiff  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dual Number Automatic Differentiation - A Gentle Introduction" href="dual_autodiff.html" />
+    <link rel="prev" title="Dual Number Automatic Differentiation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            dual_autodiff
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-are-dual-numbers">What are Dual Numbers?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#structure">Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-operations">Basic Operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#addition">Addition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiplication">Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#division">Division</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#automatic-differentiation">Automatic Differentiation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#forward-mode">Forward Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-functions">Common Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#example-usage">Example Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#computing-simple-derivatives">Computing Simple Derivatives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#chain-rule-application">Chain Rule Application</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dual_autodiff.html">Dual Number Automatic Differentiation - A Gentle Introduction</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">dual_autodiff</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Theory</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/theory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="theory">
+<h1>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h1>
+<section id="what-are-dual-numbers">
+<h2>What are Dual Numbers?<a class="headerlink" href="#what-are-dual-numbers" title="Permalink to this heading"></a></h2>
+<p>A dual number is an extension of real numbers, similar to complex numbers. While complex numbers use an imaginary unit <span class="math notranslate nohighlight">\(i\)</span> where <span class="math notranslate nohighlight">\(i^2 = -1\)</span>, dual numbers use a dual unit <span class="math notranslate nohighlight">\(\epsilon\)</span> where <span class="math notranslate nohighlight">\(\epsilon^2 = 0\)</span>.</p>
+<section id="structure">
+<h3>Structure<a class="headerlink" href="#structure" title="Permalink to this heading"></a></h3>
+<p>A dual number has the form:</p>
+<div class="math notranslate nohighlight">
+\[x = a + b\epsilon\]</div>
+<p>where:
+* <span class="math notranslate nohighlight">\(a\)</span> is the real part
+* <span class="math notranslate nohighlight">\(b\)</span> is the dual part
+* <span class="math notranslate nohighlight">\(\epsilon\)</span> is the dual unit with <span class="math notranslate nohighlight">\(\epsilon^2 = 0\)</span></p>
+</section>
+</section>
+<section id="basic-operations">
+<h2>Basic Operations<a class="headerlink" href="#basic-operations" title="Permalink to this heading"></a></h2>
+<section id="addition">
+<h3>Addition<a class="headerlink" href="#addition" title="Permalink to this heading"></a></h3>
+<p>The addition of two dual numbers follows:</p>
+<div class="math notranslate nohighlight">
+\[(a + b\epsilon) + (c + d\epsilon) = (a + c) + (b + d)\epsilon\]</div>
+</section>
+<section id="multiplication">
+<h3>Multiplication<a class="headerlink" href="#multiplication" title="Permalink to this heading"></a></h3>
+<p>The multiplication uses the property <span class="math notranslate nohighlight">\(\epsilon^2 = 0\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[(a + b\epsilon)(c + d\epsilon) = ac + (bc + ad)\epsilon + bd\epsilon^2 = ac + (bc + ad)\epsilon\]</div>
+</section>
+<section id="division">
+<h3>Division<a class="headerlink" href="#division" title="Permalink to this heading"></a></h3>
+<p>Division is defined for dual numbers with non-zero real part:</p>
+<div class="math notranslate nohighlight">
+\[\frac{a + b\epsilon}{c + d\epsilon} = \frac{a}{c} + \frac{bc - ad}{c^2}\epsilon\]</div>
+</section>
+</section>
+<section id="automatic-differentiation">
+<h2>Automatic Differentiation<a class="headerlink" href="#automatic-differentiation" title="Permalink to this heading"></a></h2>
+<section id="forward-mode">
+<h3>Forward Mode<a class="headerlink" href="#forward-mode" title="Permalink to this heading"></a></h3>
+<p>Forward-mode automatic differentiation computes derivatives alongside function evaluation.
+When we create a dual number <span class="math notranslate nohighlight">\(x = a + \epsilon\)</span>, the dual part tracks the derivative:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">Dual</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># 2 + ε</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>           <span class="c1"># 4 + 4ε</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">dual</span><span class="p">)</span>       <span class="c1"># 4.0 (derivative of x² at x=2)</span>
+</pre></div>
+</div>
+</section>
+<section id="common-functions">
+<h3>Common Functions<a class="headerlink" href="#common-functions" title="Permalink to this heading"></a></h3>
+<p>Basic derivatives are implemented as:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\sin(a + b\epsilon) &amp;= \sin(a) + b\cos(a)\epsilon\\\cos(a + b\epsilon) &amp;= \cos(a) - b\sin(a)\epsilon\\\exp(a + b\epsilon) &amp;= \exp(a) + b\exp(a)\epsilon\\\log(a + b\epsilon) &amp;= \log(a) + \frac{b}{a}\epsilon\end{aligned}\end{align} \]</div>
+</section>
+</section>
+<section id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this heading"></a></h2>
+<section id="computing-simple-derivatives">
+<h3>Computing Simple Derivatives<a class="headerlink" href="#computing-simple-derivatives" title="Permalink to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute derivative of sin(x²)</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">Dual</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;f&#39;(2) = </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">dual</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="chain-rule-application">
+<h3>Chain Rule Application<a class="headerlink" href="#chain-rule-application" title="Permalink to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute derivative of exp(sin(x))</span>
+<span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">.</span><span class="n">sin</span><span class="p">()</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">Dual</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">g</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;g&#39;(1) = </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">dual</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Dual Number Automatic Differentiation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="dual_autodiff.html" class="btn btn-neutral float-right" title="Dual Number Automatic Differentiation - A Gentle Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Xueqing Xu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
