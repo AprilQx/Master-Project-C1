@@ -3,19 +3,21 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 project = 'dual_autodiff'
-copyright = '2024, Xueqing Xu'
-author = 'Xueqing Xu'
+copyright = '2024, Your Name'
+author = 'Your Name'
 
+# Add any Sphinx extension module names here
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
-    'sphinx.ext.mathjax',
-    'nbsphinx',
-    'sphinx.ext.viewcode'
+    'sphinx.ext.viewcode',
+    'sphinx_rtd_theme',
+    'myst_parser',
 ]
 
-templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
+# The theme to use for HTML and HTML Help pages
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+
+# List of patterns, relative to source directory, that match files and
+# directories to ignore when looking for source files.
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
