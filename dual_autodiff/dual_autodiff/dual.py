@@ -24,6 +24,12 @@ class Dual:
             raise ValueError("NaN is not allowed in dual numbers")
         self.real = float(real)
         self.dual = float(dual)
+    
+    def __repr__(self):
+        return f"Dual(real={self.real}, dual={self.dual})"
+
+    def __str__(self):
+        return self.__repr__()
 
     @staticmethod
     def zero():

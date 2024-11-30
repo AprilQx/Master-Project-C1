@@ -1,12 +1,19 @@
 import numpy as np
-import math 
-from typing import Union
+cimport numpy as np
 
-class Dual:
+from libc.math cimport sin as csin, cos as ccos, exp as cexp
+from libc.math cimport log as clog, sqrt as csqrt, tan as ctan
+from libc.math cimport pow as cpow, isnan, isinf
+
+
+cdef class Dual:
     """
     A class to represent a dual number.
     """
-    def __init__(self, real: Union[int, float], dual: Union[int, float]=0.0):
+    cdef public double real
+    cdef public double dual
+    
+    def __init__(self, double real, double dual=0.0):
         """
         Initialize a dual number with validation for special values
 
@@ -18,13 +25,13 @@ class Dual:
             ValueError: Infinity is not allowed in dual numbers
             ValueError: NaN is not allowed in dual numbers
         """
-        if math.isinf(real) or math.isinf(dual):
-            raise ValueError("Infinity is not allowed in dual numbers")
-        if math.isnan(real) or math.isnan(dual):
-            raise ValueError("NaN is not allowed in dual numbers")
-        self.real = float(real)
-        self.dual = float(dual)
 
+        if isinf(real) or isinf(dual):
+            raise ValueError("Infinity is not allowed in dual numbers")
+        if isnan(real) or isnan(dual):
+            raise ValueError("NaN is not allowed in dual numbers")
+        self.real = real
+        self.dual = dual
     @staticmethod
     def zero():
         #no access to instance variables
@@ -92,14 +99,14 @@ class Dual:
         """
         if isinstance(other, (int, float)):
             return Dual(self.real / other, self.dual / other)
-        return Dual(self.real / other.real, (self.dual * other.real - self.real * other.dual) / (other.real ** 2))
+        return Dual(self.real / other.real, (self.dual * other.real - self.real * other.dual) / (other.real * other.real))
     
-    def sin(self):
+    cpdef Dual sin(self):
         """
         the dual part of the sin is calculated using the formula:"""
         return Dual(math.sin(self.real), self.dual * math.cos(self.real))
     
-    def cos(self):
+    cpdef Dual cos(self):
         """
         the dual part of the cos is calculated using the formula:"""
         return Dual(math.cos(self.real), -self.dual * math.sin(self.real))
