@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: dual_autodiff_x
+Version: 0.1.0
+Summary: Cythonized automatic differentiation using dual numbers
+Requires-Python: >=3.9
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
