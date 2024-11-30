@@ -1,0 +1,18 @@
+[project]
+name = "dual_autodiff_x"
+version = "0.1.0"
+description = "Cythonized automatic differentiation using dual numbers"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy",
+    "matplotlib",
+]
+
+[build-system]
+requires = [
+    "setuptools>=61.0",
+    "wheel",
+    "Cython>=3.0.0",
+    "numpy"
+]
+build-backend = "setuptools.build_meta"
