@@ -32,6 +32,12 @@ cdef class Dual:
             raise ValueError("NaN is not allowed in dual numbers")
         self.real = real
         self.dual = dual
+    
+    def __repr__(self):
+        return f"Dual(real={self.real}, dual={self.dual})"
+
+    def __str__(self):
+        return self.__repr__()
     @staticmethod
     def zero():
         #no access to instance variables
@@ -104,40 +110,42 @@ cdef class Dual:
     cpdef Dual sin(self):
         """
         the dual part of the sin is calculated using the formula:"""
-        return Dual(math.sin(self.real), self.dual * math.cos(self.real))
+        return Dual(csin(self.real), self.dual * ccos(self.real))
     
     cpdef Dual cos(self):
         """
         the dual part of the cos is calculated using the formula:"""
-        return Dual(math.cos(self.real), -self.dual * math.sin(self.real))
+        return Dual(ccos(self.real), -self.dual * csin(self.real))
     
-    def exp(self):
+    cpdef Dual exp(self):
         """
         the dual part of the exp is calculated using the formula:"""
-        return Dual(math.exp(self.real), self.dual * math.exp(self.real))
+        cdef double exp_real = cexp(self.real)
+        return Dual(exp_real, self.dual * exp_real)
     
-    def log(self):
+    cpdef Dual log(self):
         """
         the dual part of the log is calculated using the formula:"""
-        return Dual(math.log(self.real), self.dual / self.real)
-    
+        return Dual(clog(self.real), self.dual / self.real)
 
-    def sqrt(self):
+    cpdef Dual sqrt(self):
         """
         the dual part of the sqrt is calculated using the formula:"""
-        return Dual(math.sqrt(self.real), self.dual / (2 * math.sqrt(self.real)))
+        cdef double sqrt_real = csqrt(self.real)
+        return Dual(sqrt_real, self.dual / (2.0 * sqrt_real))
     
 
-    def power(self, n):
-        """
-        the dual part of the power is calculated using the formula:"""
-        return Dual(self.real ** n, n * (self.real ** (n-1)) * self.dual)
+    cpdef Dual power(self, double n):
+        """Compute power of dual number."""
+        return Dual(
+            cpow(self.real, n),
+            n * cpow(self.real, n-1.0) * self.dual
+        )
     
-
-    def tan(self):
-        """
-        the dual part of the tan is calculated using the formula:"""
-        return Dual(math.tan(self.real), self.dual / (math.cos(self.real) ** 2))
+    cpdef Dual tan(self):
+        """Compute tangent of dual number."""
+        cdef double cos_real = ccos(self.real)
+        return Dual(ctan(self.real), self.dual / (cos_real * cos_real))
     
     
    

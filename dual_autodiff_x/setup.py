@@ -1,28 +1,23 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
-
-from setuptools import setup, Extension
-from Cython.Build import cythonize
+import numpy
 
 extensions = [
     Extension(
         "dual_autodiff_x.dual",
         ["dual_autodiff_x/dual.pyx"],
+        include_dirs=[numpy.get_include()] # This is required to include the numpy headers
     )
 ]
 
-# Call setup with cythonized extensions
 setup(
-    ext_modules=cythonize(
-        extensions,
-        compiler_directives={'language_level': "3"}
-    ),
+    name="dual_autodiff_x",
+    version="0.1.0",
     packages=["dual_autodiff_x"],
-    
-    # Include only .so/.pyd files (compiled extensions), exclude source files
-    package_data={"dual_autodiff_x": ["*.so", "*.pyd"]},
-    exclude_package_data={"dual_autodiff_x": ["*.pyx", "*.py"]},
-    
-    # Ensure that wheels can be built
+    ext_modules=cythonize(extensions),
     zip_safe=False,
+    python_requires=">=3.9",
+    install_requires=[
+        "numpy>=1.20.0",
+    ],
 )
