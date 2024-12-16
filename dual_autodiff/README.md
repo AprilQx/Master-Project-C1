@@ -42,7 +42,11 @@ Full documentation is available in the docs directory. You can build the documen
 cd docs
 make html
 ```
-The generated documentation will be available in docs/_build/html
+The generated documentation will be available in docs/_build/html (currently the html is built already)
+```bash
+open index.html
+```
+This will open your documentation in your default web browser. No need for Live Server or online hosting if you just want to check how your documentation looks!
 
 ## Examples
 Example Jupyter notebooks demonstrating the usage of the package are available in the examples directory:
