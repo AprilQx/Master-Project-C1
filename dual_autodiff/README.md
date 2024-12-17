@@ -57,7 +57,7 @@ Example Jupyter notebooks demonstrating the usage of the package are available i
 ## Running Tests
 To run the tests, use `pytest`:
 ```bash
-pytest
+pytest -s tests /*
 ```
 
 ## Contributing

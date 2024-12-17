@@ -19,9 +19,3 @@ Quick Example
     print(f"Value: {y.real}")     # 4.0
     print(f"Derivative: {y.dual}") # 4.0
 
-Installation
-------------
-
-.. code-block:: bash
-
-    pip install -e .

@@ -25,7 +25,8 @@ dev = [
     "sphinx-rtd-theme",
     "nbsphinx",
     "ipython",
-    "jupyter"
+    "jupyter",
+    "pandoc"
 ]
 
 [tool.pytest.ini_options]
